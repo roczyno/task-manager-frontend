@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "name": "Complete Project Proposal",
+    "description": "Write a detailed proposal outlining project scope, objectives, and deliverables.",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1683288662019-c92caea8276d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "deadline": "2024-05-15T18:00:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Design User Interface Mockups",
+    "description": "Create wireframes and design mockups for the project's user interface.",
+    "imageUrl": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "deadline": "2024-05-20T12:00:00Z"
+  },
+  {
+    "id": 3,
+    "name": "Implement Backend APIs",
+    "description": "Develop RESTful APIs to handle backend functionality and data management.",
+    "imageUrl": "https://images.unsplash.com/photo-1581094651181-35942459ef62?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "deadline": "2024-05-25T15:00:00Z"
+  },
+  {
+    "id": 4,
+    "name": "Write Unit Tests",
+    "description": "Create unit tests to ensure code quality and functionality.",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1685086785423-435c02d5c321?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "deadline": "2024-05-18T10:00:00Z"
+  },
+  {
+    "id": 5,
+    "name": "Refactor Codebase",
+    "description": "Review and refactor existing code for improved readability and performance.",
+    "imageUrl": "https://images.unsplash.com/photo-1581094289810-adf5d25690e3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "deadline": "2024-05-22T16:00:00Z"
+  },
+  {
+    "id": 6,
+    "name": "Prepare Presentation Slides",
+    "description": "Create slides for project presentation summarizing key points and progress.",
+    "imageUrl": "https://images.unsplash.com/photo-1581094651181-35942459ef62?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "deadline": "2024-05-28T14:00:00Z"
+  },
+  {
+    "id": 7,
+    "name": "Test Application on Multiple Devices",
+    "description": "Conduct comprehensive testing of the application on various devices and platforms.",
+    "imageUrl": "https://images.unsplash.com/photo-1581094289810-adf5d25690e3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "deadline": "2024-05-30T11:00:00Z"
+  },
+  {
+    "id": 8,
+    "name": "Document API Endpoints",
+    "description": "Create documentation detailing available API endpoints and request/response formats.",
+    "imageUrl": "https://images.unsplash.com/photo-1581094289810-adf5d25690e3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "deadline": "2024-05-24T17:00:00Z"
+  },
+  {
+    "id": 9,
+    "name": "Review User Feedback",
+    "description": "Collect and analyze user feedback to identify areas for improvement.",
+    "imageUrl": "https://images.unsplash.com/photo-1581094651181-35942459ef62?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "deadline": "2024-05-27T09:00:00Z"
+  },
+  {
+    "id": 10,
+    "name": "Deploy Application to Production",
+    "description": "Deploy the finalized application to production servers for public access.",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1685086785423-435c02d5c321?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "deadline": "2024-05-31T20:00:00Z"
+  }
+]

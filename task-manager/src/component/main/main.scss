@@ -1,0 +1,47 @@
+.main {
+  width: 100%;
+  height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+
+  .content {
+    // position: absolute;
+    // top: 180px;
+    // right: 250px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+    h1 {
+      font-size: 40px;
+      width: 800px;
+    }
+    p {
+      width: 800px;
+    }
+
+    .button {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      button {
+        padding: 20px;
+        border-radius: 5px;
+        width: 200px;
+        cursor: pointer;
+      }
+      .left {
+        background-color: #30a54f;
+        color: #ffffff;
+        border: none;
+      }
+      .right {
+        background-color: #f4f5f9;
+        color: #30a54f;
+        border: none;
+      }
+    }
+  }
+}

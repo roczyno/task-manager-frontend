@@ -1,0 +1,24 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  input {
+    padding: 10px;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+    }
+  }
+  button {
+    padding: 10px;
+    background-color: green;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+  }
+}
