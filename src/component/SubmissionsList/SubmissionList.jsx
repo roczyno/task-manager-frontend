@@ -19,7 +19,9 @@ const style = {
 };
 
 export default function SubmissionsList({ handleClose, open, taskId }) {
-  const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
+  // const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
+
+  const jwt = "sghsgks";
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(null); // Track loading state for each submission
 

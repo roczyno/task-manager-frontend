@@ -24,7 +24,8 @@ const style = {
 };
 
 export default function UserList({ handleClose, open, taskId }) {
-  const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
+  // const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
+  const jwt = "sjgl";
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(null); // Track loading state for each user
 

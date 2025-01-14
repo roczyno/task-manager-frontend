@@ -6,31 +6,41 @@ import {
   TextField,
 } from "@mui/material";
 import "./createTask.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-const tags = [
-  "Frontend",
-  "Backend",
-  "Fullstack",
-  "Reactjs",
-  "Nodejs",
-  "SpringBoot",
-];
 
 const CreateTask = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
   const [dueDate, setDueDate] = useState("");
   const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [assignedUser, setAssignedUser] = useState(null);
   const navigate = useNavigate();
 
-  const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
+  const jwt = "dgdhdshshs";
 
-  const handleTagsChange = (event, value) => {
-    setSelectedTags(value);
+  // Fetch users from the server
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/users", {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        });
+        setUsers(res.data); // Assuming the API returns an array of users
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, [jwt]);
+
+  const handleUserChange = (event, value) => {
+    setAssignedUser(value);
   };
 
   const handleCreateTask = async (e) => {
@@ -40,8 +50,8 @@ const CreateTask = () => {
     const taskData = {
       title,
       description,
-      tags: selectedTags,
       dueDate,
+      assignedTo: assignedUser?.id,
     };
 
     try {
@@ -83,35 +93,30 @@ const CreateTask = () => {
             onChange={(e) => setDescription(e.target.value)}
             style={{ width: "100%" }}
           ></textarea>
-          <Grid
-            item
-            xs={12}
-            sx={{
-              width: "100%",
-              overflow: "hidden",
-              height: "70px",
-            }}
-          >
+
+          <Grid item xs={12} sx={{ width: "100%", marginBottom: "1rem" }}>
             <Autocomplete
-              multiple
-              id="multiple-limit-tags"
-              options={tags}
-              onChange={handleTagsChange}
-              getOptionLabel={(option) => option}
-              placeholder="Select to add tags"
-              fullWidth
-              size="large"
-              sx={{ overflow: "hidden" }}
+              id="assign-user"
+              options={users}
+              getOptionLabel={(option) => option.name}
+              onChange={handleUserChange}
               renderInput={(params) => (
-                <TextField label="Select Tags" fullWidth {...params} />
+                <TextField
+                  label="Assign User"
+                  fullWidth
+                  placeholder="Select a user"
+                  {...params}
+                />
               )}
             />
           </Grid>
+
           <input
             type="date"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
           />
+
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <button type="submit" disabled={loading}>
               {loading ? <CircularProgress size={24} /> : "Create"}

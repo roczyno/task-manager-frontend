@@ -22,8 +22,10 @@ const Task = ({ item }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const ITEM_HEIGHT = 48;
-  const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
-  const user = JSON.parse(localStorage.getItem("userData")).user;
+  // const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
+  // const user = JSON.parse(localStorage.getItem("userData")).user;
+  const jwt = "gsgs";
+  const user = {};
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

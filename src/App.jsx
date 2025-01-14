@@ -9,6 +9,8 @@ import { Navbar } from "./component/navbar/Navbar";
 import Tasks from "./pages/tasks/Tasks";
 import DoneTasks from "./pages/doneTasks/DoneTasks";
 import AssignedTasks from "./pages/assignedTasks/AssignedTasks";
+import AddUsers from "./pages/addUsers/AddUsers";
+import AllUsers from "./pages/allUsers/AllUsers";
 
 const App = () => {
   const user = true;
@@ -31,7 +33,7 @@ const App = () => {
         },
         {
           path: "/create-task",
-          element: user ? <CreateTask /> : <Login />,
+          element: <CreateTask />,
         },
         {
           path: "/login",
@@ -52,6 +54,14 @@ const App = () => {
         {
           path: "/assigned",
           element: <AssignedTasks />,
+        },
+        {
+          path: "/add-users",
+          element: <AddUsers />,
+        },
+        {
+          path: "/users",
+          element: <AllUsers />,
         },
       ],
     },

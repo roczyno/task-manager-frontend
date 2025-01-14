@@ -7,8 +7,6 @@ import { eyeBlocked } from "react-icons-kit/icomoon/eyeBlocked";
 import { eye } from "react-icons-kit/icomoon/eye";
 import { useState } from "react";
 
-import axios from "axios";
-
 const Login = () => {
   const [type, setType] = useState("password");
   const [icon, setIcon] = useState(eyeBlocked);
@@ -29,18 +27,42 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post("http://localhost:5000/auth/login", {
-        email,
-        password,
-      });
 
-      localStorage.setItem("userData", JSON.stringify(res.data));
-      res.data && navigate("/tasks");
+    try {
+      const response = await fetch(
+        "https://hoe8hs0pu1.execute-api.eu-west-1.amazonaws.com/Prod/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
+
+      // Check if the response is okay
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+
+      // Parse the response as JSON
+      const data = await response.json();
+
+      console.log(data);
+
+      // Store the user data in localStorage
+      localStorage.setItem("userData", JSON.stringify(data));
+
+      // Navigate to another route on success
+      data && navigate("/tasks");
     } catch (error) {
-      console.log(error);
+      console.error("Error during login:", error);
     }
   };
+
   return (
     <div className="login">
       <div className="reg_container">

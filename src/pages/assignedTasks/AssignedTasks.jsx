@@ -4,8 +4,10 @@ import axios from "axios";
 import AssignedTask from "../../component/assignedTask/AssignedTask";
 
 const AssignedTasks = () => {
-  const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
-  const role = JSON.parse(localStorage.getItem("userData")).user.role;
+  // const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
+  // const role = JSON.parse(localStorage.getItem("userData")).user.role;
+  const jwt = "sgsjlg";
+  const role = "USER";
 
   const [data, setData] = useState([]);
 

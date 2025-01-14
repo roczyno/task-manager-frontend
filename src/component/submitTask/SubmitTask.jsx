@@ -17,7 +17,8 @@ const style = {
 };
 
 export default function SubmitTask({ handleClose, open, taskId }) {
-  const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
+  // const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
+  const jwt = "sgsgg";
   const [githubLink, setGithubLink] = useState("");
   const [deployedUrlLink, setDeployedUrlLink] = useState("");
   const [loading, setLoading] = useState(false);
