@@ -27,8 +27,9 @@ const Task = ({ item }) => {
   const userData = JSON.parse(localStorage.getItem("userData"));
   const role = userData.user["custom:role"];
 
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
   useEffect(() => {
-    
     const fetchRandomImage = async () => {
       const res = await fetch("https://picsum.photos/200/300"); // 200x300 image
       setTaskImage(res.url); // Get the URL of the random image
@@ -64,17 +65,15 @@ const Task = ({ item }) => {
     console.log("Edit Task");
     handleClose();
   };
+  console.log(item);
 
   const handleDelete = async () => {
     try {
-      const res = await axios.delete(
-        "http://localhost:5000/api/task/delete/" + item.id,
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
+      const res = await axios.delete(`${BASE_URL}/task/${item.id}`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
       res.data && alert("Task deleted successfully");
     } catch (error) {
       console.log(error);

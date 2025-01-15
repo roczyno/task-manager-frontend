@@ -12,6 +12,8 @@ const Login = () => {
   const [icon, setIcon] = useState(eyeBlocked);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // eslint-disable-next-line no-undef
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   const navigate = useNavigate();
 
@@ -29,19 +31,16 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        "https://iiq610r2b5.execute-api.eu-west-1.amazonaws.com/Prod/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
 
       // Check if the response is okay
       if (!response.ok) {
@@ -50,8 +49,6 @@ const Login = () => {
 
       // Parse the response as JSON
       const data = await response.json();
-
-      
 
       // Store the user data in localStorage
       localStorage.setItem("userData", JSON.stringify(data));

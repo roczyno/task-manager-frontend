@@ -1,10 +1,4 @@
-import {
-  Box,
-  CircularProgress,
-  Grid,
-  TextField,
-  MenuItem,
-} from "@mui/material";
+import { Box, CircularProgress, TextField, MenuItem } from "@mui/material";
 import "./addUsers.scss";
 import { useState } from "react";
 import axios from "axios";
@@ -17,7 +11,7 @@ const AddUsers = () => {
   const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const jwt = JSON.parse(localStorage.getItem("userData")).idToken;
 
   const handleAddUser = async (e) => {
@@ -32,15 +26,11 @@ const AddUsers = () => {
     };
 
     try {
-      const res = await axios.post(
-        "https://iiq610r2b5.execute-api.eu-west-1.amazonaws.com/Prod/users",
-        userData,
-        {
-          headers: {
-            Authorization: `${jwt}`,
-          },
-        }
-      );
+      const res = await axios.post(`${BASE_URL}/users`, userData, {
+        headers: {
+          Authorization: `${jwt}`,
+        },
+      });
       res.data && alert("User added successfully");
       res.data && navigate("/users");
       setLoading(false);

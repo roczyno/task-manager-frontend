@@ -7,19 +7,17 @@ const AllUsers = () => {
   const [loading, setLoading] = useState(false);
 
   const jwt = JSON.parse(localStorage.getItem("userData")).idToken;
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(
-          "https://iiq610r2b5.execute-api.eu-west-1.amazonaws.com/Prod/users",
-          {
-            headers: {
-              Authorization: `${jwt}`,
-            },
-          }
-        );
+        const res = await axios.get(`${BASE_URL}/users`, {
+          headers: {
+            Authorization: `${jwt}`,
+          },
+        });
         console.log(res.data);
 
         if (res.data?.isSuccessful) {

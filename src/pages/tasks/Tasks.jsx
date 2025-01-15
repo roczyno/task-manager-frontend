@@ -6,7 +6,9 @@ import axios from "axios";
 const Tasks = () => {
   const jwt = JSON.parse(localStorage.getItem("userData")).idToken;
   const userData = JSON.parse(localStorage.getItem("userData"));
-  const role = userData.user["custom:role"]; // Corrected role access
+  const role = userData.user["custom:role"];
+  // Corrected role access
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   // For "USER" role, we need to get the user's ID.
   const userId = userData.user["custom:userId"]; // Assuming userId is stored in localStorage
@@ -19,14 +21,11 @@ const Tasks = () => {
         let res;
         if (role === "ADMIN") {
           // ADMIN fetches all tasks
-          res = await axios.get(
-            "https://iiq610r2b5.execute-api.eu-west-1.amazonaws.com/Prod/tasks",
-            {
-              headers: {
-                Authorization: `${jwt}`,
-              },
-            }
-          );
+          res = await axios.get(`${BASE_URL}/tasks`, {
+            headers: {
+              Authorization: `${jwt}`,
+            },
+          });
           console.log(res);
         } else if (role === "USER") {
           // USER fetches only their specific tasks
@@ -49,7 +48,7 @@ const Tasks = () => {
     };
 
     getAllTasks();
-  }, [jwt, role, userId]); // Added userId dependency for fetching tasks when userId changes
+  }, [jwt, role, userId, BASE_URL]); // Added userId dependency for fetching tasks when userId changes
 
   return (
     <div className="tasks">

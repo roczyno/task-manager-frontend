@@ -4,15 +4,15 @@ import { Link } from "react-router-dom";
 
 const menu = [
   { name: "Create Task", value: "", role: ["ADMIN"], path: "/create-task" },
-  { name: "DONE", value: "done", role: ["ADMIN", "USER"], path: "/done" },
+  // { name: "DONE", value: "done", role: ["ADMIN", "USER"], path: "/done" },
   { name: "All Tasks", value: "", role: ["ADMIN", "USER"], path: "/tasks" },
-  { name: "ASSIGNED", value: "assigned", role: ["ADMIN"], path: "/assigned" },
+  // { name: "ASSIGNED", value: "assigned", role: ["ADMIN"], path: "/assigned" },
   { name: "Add Users", value: "", role: ["ADMIN"], path: "/add-users" },
   { name: "All Users", value: "", role: ["ADMIN"], path: "/users" }, // New menu item
 ];
 
 const userData = JSON.parse(localStorage.getItem("userData"));
-const role = "ADMIN";
+const role = userData?.user["custom:role"];
 const Sidebar = ({ menuOpen }) => {
   return (
     <div className={menuOpen ? "sidebar active" : "sidebar"}>
