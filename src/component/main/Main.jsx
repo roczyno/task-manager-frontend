@@ -7,7 +7,7 @@ const Main = () => {
   return (
     <div className="main">
       <div className="content">
-        <h1>Manage Your Amalitech Team's Daily Task</h1>
+        <h1>Manage Your Amalitechs Team's Daily Task</h1>
         <p>
           It is a long established fact that a reader will be distracted by the
           reader content of a page when looking at it's layout
