@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./task.scss";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import UserList from "../userList/UserList";
@@ -16,16 +16,26 @@ const options = {
 };
 
 const Task = ({ item }) => {
+  const [taskImage, setTaskImage] = useState("");
   const [openUserList, setOpenUserList] = useState(false);
   const [openSubmissionsList, setOpenSubmissionsList] = useState(false);
   const [openSubmitTask, setOpenSubmitTask] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const ITEM_HEIGHT = 48;
-  // const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
-  // const user = JSON.parse(localStorage.getItem("userData")).user;
-  const jwt = "gsgs";
-  const user = {};
+  const jwt = JSON.parse(localStorage.getItem("userData")).idToken;
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const role = userData.user["custom:role"];
+
+  useEffect(() => {
+    
+    const fetchRandomImage = async () => {
+      const res = await fetch("https://picsum.photos/200/300"); // 200x300 image
+      setTaskImage(res.url); // Get the URL of the random image
+    };
+
+    fetchRandomImage();
+  }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -51,7 +61,6 @@ const Task = ({ item }) => {
   };
 
   const handleEdit = () => {
-    // Logic for editing the task
     console.log("Edit Task");
     handleClose();
   };
@@ -73,7 +82,7 @@ const Task = ({ item }) => {
     handleClose();
   };
 
-  const menuItems = user.role === "ADMIN" ? options.ADMIN : options.USER;
+  const menuItems = role === "ADMIN" ? options.ADMIN : options.USER;
 
   const handleMenuItemClick = (option) => {
     switch (option) {
@@ -102,10 +111,11 @@ const Task = ({ item }) => {
       <div className="container">
         <div className="left">
           <div className="l">
-            <img src={item.image} alt="" />
+            {/* If task image exists, display it; otherwise, use a random image */}
+            <img src={taskImage || item.image} alt="task" />
           </div>
           <div className="r">
-            <h2>{item.title}</h2>
+            <h2>{item.name}</h2>
             <p>{item.description}</p>
           </div>
         </div>

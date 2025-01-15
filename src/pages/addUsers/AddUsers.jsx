@@ -18,7 +18,7 @@ const AddUsers = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const jwt = "dgdhdshshs";
+  const jwt = JSON.parse(localStorage.getItem("userData")).idToken;
 
   const handleAddUser = async (e) => {
     e.preventDefault();
@@ -33,11 +33,11 @@ const AddUsers = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/users/add",
+        "https://iiq610r2b5.execute-api.eu-west-1.amazonaws.com/Prod/users",
         userData,
         {
           headers: {
-            Authorization: `Bearer ${jwt}`,
+            Authorization: `${jwt}`,
           },
         }
       );

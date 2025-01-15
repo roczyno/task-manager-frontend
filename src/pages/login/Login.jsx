@@ -30,7 +30,7 @@ const Login = () => {
 
     try {
       const response = await fetch(
-        "https://hoe8hs0pu1.execute-api.eu-west-1.amazonaws.com/Prod/login",
+        "https://iiq610r2b5.execute-api.eu-west-1.amazonaws.com/Prod/login",
         {
           method: "POST",
           headers: {
@@ -51,7 +51,7 @@ const Login = () => {
       // Parse the response as JSON
       const data = await response.json();
 
-      console.log(data);
+      
 
       // Store the user data in localStorage
       localStorage.setItem("userData", JSON.stringify(data));

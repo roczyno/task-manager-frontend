@@ -37,7 +37,10 @@ export const Navbar = () => {
         <div className="auth">
           {user ? (
             <div className="user">
-              <img alt="" src={user.profilePic} />
+              <img
+                alt=""
+                src="https://images.pexels.com/photos/7552374/pexels-photo-7552374.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              />
               <LogoutIcon
                 titleAccess="logout"
                 sx={{ cursor: "pointer" }}

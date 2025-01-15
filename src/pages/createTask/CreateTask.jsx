@@ -13,24 +13,35 @@ import { useNavigate } from "react-router-dom";
 const CreateTask = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState("");
+  const [deadline, setDeadline] = useState(""); // Changed dueDate to match backend field name
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [assignedUser, setAssignedUser] = useState(null);
   const navigate = useNavigate();
 
-  const jwt = "dgdhdshshs";
+  const jwt = JSON.parse(localStorage.getItem("userData")).idToken;
 
-  // Fetch users from the server
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/users", {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        });
-        setUsers(res.data); // Assuming the API returns an array of users
+        const res = await axios.get(
+          "https://iiq610r2b5.execute-api.eu-west-1.amazonaws.com/Prod/users",
+          {
+            headers: {
+              Authorization: `${jwt}`,
+            },
+          }
+        );
+
+        if (res.data?.isSuccessful) {
+          const userList = res.data.users.map((user) => ({
+            id: user.attributes["custom:userId"], // For assignedUserId
+            email: user.attributes["email"], // Display email in dropdown
+          }));
+          setUsers(userList);
+        } else {
+          console.error("Failed to fetch users: ", res.data);
+        }
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -48,22 +59,23 @@ const CreateTask = () => {
     setLoading(true);
 
     const taskData = {
-      title,
+      name: title, // Map title to name
       description,
-      dueDate,
-      assignedTo: assignedUser?.id,
+      assignedUserId: assignedUser?.id, // Assigned user ID
+      deadline, // The full datetime string selected by the user
     };
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/task/create",
+        "https://iiq610r2b5.execute-api.eu-west-1.amazonaws.com/Prod/tasks",
         taskData,
         {
           headers: {
-            Authorization: `Bearer ${jwt}`,
+            Authorization: `${jwt}`,
           },
         }
       );
+      console.log(res);
       res.data && alert("Task created successfully");
       res.data && navigate("/tasks");
       setLoading(false);
@@ -98,7 +110,7 @@ const CreateTask = () => {
             <Autocomplete
               id="assign-user"
               options={users}
-              getOptionLabel={(option) => option.name}
+              getOptionLabel={(option) => option.email} // Display email only
               onChange={handleUserChange}
               renderInput={(params) => (
                 <TextField
@@ -112,9 +124,9 @@ const CreateTask = () => {
           </Grid>
 
           <input
-            type="date"
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
+            type="datetime-local"
+            value={deadline}
+            onChange={(e) => setDeadline(e.target.value)} // Capture both date and time
           />
 
           <Box sx={{ display: "flex", alignItems: "center" }}>
