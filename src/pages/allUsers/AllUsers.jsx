@@ -26,7 +26,8 @@ const AllUsers = () => {
             userId: user.attributes["custom:userId"],
             email: user.attributes["email"],
             role: user.attributes["custom:role"],
-            createdAt: user.userCreateDate, // Assuming `createdAt` is part of attributes
+            username: user.attributes["name"],
+            createdAt: user.userCreateDate,
           }));
           setUsers(userList);
         } else {
@@ -41,7 +42,7 @@ const AllUsers = () => {
     };
 
     fetchUsers();
-  }, [jwt]);
+  }, [jwt, BASE_URL]);
 
   return (
     <div className="all-users">
@@ -56,6 +57,7 @@ const AllUsers = () => {
             <thead>
               <tr>
                 <th>Email</th>
+                <th>Username</th>
                 <th>Role</th>
                 <th>User ID</th>
                 <th>Created At</th>
@@ -65,6 +67,7 @@ const AllUsers = () => {
               {users.map((user) => (
                 <tr key={user.userId}>
                   <td>{user.email}</td>
+                  <td>{user.username}</td>
                   <td>{user.role}</td>
                   <td>{user.userId}</td>
                   <td>{user.createdAt}</td>{" "}

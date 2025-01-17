@@ -26,22 +26,22 @@ const Tasks = () => {
               Authorization: `${jwt}`,
             },
           });
-          console.log(res);
+          console.log(res.data.tasks);
+          setData(res.data.tasks);
         } else if (role === "USER") {
           // USER fetches only their specific tasks
-          res = await axios.get(
-            `https://iiq610r2b5.execute-api.eu-west-1.amazonaws.com/Prod/tasks/${userId}`,
-            {
-              headers: {
-                Authorization: `${jwt}`,
-              },
-            }
-          );
+          res = await axios.get(`${BASE_URL}/tasks/user/${userId}`, {
+            headers: {
+              Authorization: `${jwt}`,
+            },
+          });
+          console.log(res.data);
+          setData(res.data);
         }
 
-        if (res?.data) {
-          setData(res.data.tasks); // Set the data fetched from the API
-        }
+        // if (res?.data) {
+        //   setData(res.data.tasks); // Set the data fetched from the API
+        // }
       } catch (error) {
         console.log(error);
       }
@@ -52,7 +52,7 @@ const Tasks = () => {
 
   return (
     <div className="tasks">
-      {data.map((item) => (
+      {data?.map((item) => (
         <Task item={item} key={item.id} />
       ))}
     </div>

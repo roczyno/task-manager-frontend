@@ -3,7 +3,9 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
+import axios from "axios";
 import "./submitTask.scss";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -17,35 +19,36 @@ const style = {
 };
 
 export default function SubmitTask({ handleClose, open, taskId }) {
-  // const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
-  const jwt = "sgsgg";
-  const [githubLink, setGithubLink] = useState("");
-  const [deployedUrlLink, setDeployedUrlLink] = useState("");
+  const jwt = JSON.parse(localStorage.getItem("userData")).idToken;
+  const navigate = useNavigate();
+
+  const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   const handleSubmitTask = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/submissions/submit?taskId=${taskId}&githubLink=${githubLink}&deployedUrl=${deployedUrlLink}`,
+      await axios.put(
+        `${BASE_URL}/tasks/status`,
         {
-          method: "POST",
+          taskId,
+          status: "COMPLETED",
+          comment,
+        },
+        {
           headers: {
-            Authorization: `Bearer ${jwt}`,
+            Authorization: jwt,
           },
         }
       );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      await response.json();
       alert("Submitted successfully");
-      setLoading(false);
-      setDeployedUrlLink("");
-      setGithubLink("");
+      navigate("/tasks");
     } catch (error) {
-      console.error("Fetch error:", error);
+      console.error("Axios error:", error);
+      alert("Failed to submit task");
+    } finally {
       setLoading(false);
     }
   };
@@ -69,13 +72,8 @@ export default function SubmitTask({ handleClose, open, taskId }) {
           <form onSubmit={handleSubmitTask}>
             <input
               type="text"
-              placeholder="Github link here"
-              onChange={(e) => setGithubLink(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Deployed url link here"
-              onChange={(e) => setDeployedUrlLink(e.target.value)}
+              placeholder="Any Comment?"
+              onChange={(e) => setComment(e.target.value)}
             />
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <button type="submit" disabled={loading}>

@@ -58,11 +58,11 @@ export const Navbar = () => {
           ) : (
             <>
               <Link to="/login" className="link">
-                <button className="login">Login</button>
+                <button className="sign_up">Login</button>
               </Link>
-              <Link to="/register" className="link">
+              {/* <Link to="/register" className="link">
                 <button className="sign_up">Sign Up</button>
-              </Link>
+              </Link> */}
             </>
           )}
         </div>

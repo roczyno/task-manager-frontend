@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import {
@@ -8,8 +9,8 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
 import axios from "axios";
 
 const style = {
@@ -24,45 +25,69 @@ const style = {
 };
 
 export default function UserList({ handleClose, open, taskId }) {
-  // const jwt = JSON.parse(localStorage.getItem("userData")).jwt;
-  const jwt = "sjgl";
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(null); // Track loading state for each user
+  const [loading, setLoading] = useState(false); // Loading for fetching users
+  const [assigning, setAssigning] = useState(null); // Track assigning state for specific user
+
+  const jwt = JSON.parse(localStorage.getItem("userData")).idToken;
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
-    const getAllUsers = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/users/all", {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        });
-        setUsers(res.data);
-      } catch (error) {
-        console.error("Failed to fetch users", error);
-      }
-    };
+    if (open) {
+      const fetchUsers = async () => {
+        setLoading(true);
+        try {
+          const res = await axios.get(`${BASE_URL}/users`, {
+            headers: {
+              Authorization: `${jwt}`,
+            },
+          });
 
-    getAllUsers();
-  }, [jwt, taskId]);
+          if (res.data?.isSuccessful) {
+            const userList = res.data.users.map((user) => ({
+              userId: user.attributes["custom:userId"],
+              email: user.attributes["email"],
+              role: user.attributes["custom:role"],
+              username: user.attributes["name"],
+              createdAt: user.userCreateDate,
+            }));
+            setUsers(userList);
+          } else {
+            console.error("Failed to fetch users: ", res.data);
+          }
+        } catch (error) {
+          console.error("Failed to fetch users", error);
+        } finally {
+          setLoading(false);
+        }
+      };
 
-  const handleAssignUser = async (userId) => {
-    setLoading(userId); // Set loading to the user ID being assigned
+      fetchUsers();
+    }
+  }, [open, jwt, BASE_URL]);
+
+  const handleReassignUser = async (userId) => {
+    setAssigning(userId); // Set assigning state
     try {
-      await axios.post(
-        `http://localhost:5000/api/task/assign/${taskId}/user/${userId}`,
-        {},
+      await axios.put(
+        `${BASE_URL}/tasks/reassign`,
+        {
+          taskId,
+          newAssigneeUserId: userId,
+        },
         {
           headers: {
-            Authorization: `Bearer ${jwt}`,
+            Authorization: `${jwt}`,
           },
         }
       );
       alert("User assigned successfully");
-      setLoading(null);
+      handleClose(); // Close modal after successful assignment
     } catch (error) {
       alert("Failed to assign user");
-      setLoading(null);
+      console.error("Assignment Error:", error);
+    } finally {
+      setAssigning(null); // Clear assigning state
     }
   };
 
@@ -74,31 +99,51 @@ export default function UserList({ handleClose, open, taskId }) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        {users.map((user) => (
-          <div
-            key={user.id}
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "1rem",
-            }}
-          >
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar src="https://plus.unsplash.com/premium_photo-1688385848467-781c5394c017?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-              </ListItemAvatar>
-              <ListItemText primary={user.username} />
-            </ListItem>
-            <Button
-              sx={{ color: "green" }}
-              onClick={() => handleAssignUser(user.id)}
-              disabled={loading === user.id} // Disable button if this user is being assigned
+        <Typography variant="h6" component="h2" gutterBottom>
+          Reassign User
+        </Typography>
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          users.map((user) => (
+            <div
+              key={user.userId}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "1rem",
+              }}
             >
-              {loading === user.id ? <CircularProgress size={24} /> : "Select"}
-            </Button>
-          </div>
-        ))}
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar src="https://plus.unsplash.com/premium_photo-1688385848467-781c5394c017?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+                </ListItemAvatar>
+                <ListItemText primary={user.username} secondary={user.email} />
+              </ListItem>
+              <Button
+                sx={{ color: "green" }}
+                onClick={() => handleReassignUser(user.userId)}
+                disabled={assigning === user.userId} // Disable if this user is being assigned
+              >
+                {assigning === user.userId ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  "Select"
+                )}
+              </Button>
+            </div>
+          ))
+        )}
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={handleClose}
+          fullWidth
+          sx={{ marginTop: 2 }}
+        >
+          Close
+        </Button>
       </Box>
     </Modal>
   );

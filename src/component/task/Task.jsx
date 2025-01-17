@@ -2,16 +2,16 @@
 import { useState, useEffect } from "react";
 import "./task.scss";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import UserList from "../userList/UserList";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import SubmuissionsList from "../SubmissionsList/SubmissionList";
-import axios from "axios";
+import UserList from "../userList/UserList";
+import SubmissionsList from "../SubmissionsList/SubmissionList";
 import SubmitTask from "../submitTask/SubmitTask";
+import axios from "axios";
 
 const options = {
-  ADMIN: ["Assign User", "See Submissions", "Edit", "Delete"],
+  ADMIN: ["Reassign User", "Reopen Task", "Delete"],
   USER: ["Submit Task"],
 };
 
@@ -22,7 +22,7 @@ const Task = ({ item }) => {
   const [openSubmitTask, setOpenSubmitTask] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const ITEM_HEIGHT = 48;
+
   const jwt = JSON.parse(localStorage.getItem("userData")).idToken;
   const userData = JSON.parse(localStorage.getItem("userData"));
   const role = userData.user["custom:role"];
@@ -31,117 +31,94 @@ const Task = ({ item }) => {
 
   useEffect(() => {
     const fetchRandomImage = async () => {
-      const res = await fetch("https://picsum.photos/200/300"); // 200x300 image
-      setTaskImage(res.url); // Get the URL of the random image
+      const res = await fetch("https://picsum.photos/200/300");
+      setTaskImage(res.url);
     };
 
     fetchRandomImage();
   }, []);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleOpenUserList = () => {
-    setOpenUserList(true);
-    handleClose();
-  };
-
-  const handleSeeSubmissions = () => {
-    setOpenSubmissionsList(true);
-    handleClose();
-  };
-
-  const handleOpenSubmitTask = () => {
-    setOpenSubmitTask(true);
-    handleClose();
-  };
-
-  const handleEdit = () => {
-    console.log("Edit Task");
-    handleClose();
-  };
-  console.log(item);
-
-  const handleDelete = async () => {
-    try {
-      const res = await axios.delete(`${BASE_URL}/task/${item.id}`, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-      res.data && alert("Task deleted successfully");
-    } catch (error) {
-      console.log(error);
-    }
-    handleClose();
-  };
-
-  const menuItems = role === "ADMIN" ? options.ADMIN : options.USER;
-
-  const handleMenuItemClick = (option) => {
+  const handleMenuItemClick = async (option) => {
+    handleMenuClose();
     switch (option) {
-      case "Assign User":
-        handleOpenUserList();
+      case "Reassign User":
+        setOpenUserList(true);
         break;
-      case "See Submissions":
-        handleSeeSubmissions();
-        break;
-      case "Edit":
-        handleEdit();
+      case "Reopen Task":
+        try {
+          await axios.post(
+            `${BASE_URL}/tasks/reopen`,
+            {
+              taskId: item.id,
+            },
+            {
+              headers: { Authorization: `${jwt}` },
+            }
+          );
+          alert("Task Reopened successfully");
+        } catch (error) {
+          console.error(error);
+        }
         break;
       case "Delete":
-        handleDelete();
+        try {
+          await axios.delete(`${BASE_URL}/tasks/${item.id}`, {
+            headers: { Authorization: `${jwt}` },
+          });
+          alert("Task deleted successfully");
+        } catch (error) {
+          console.error(error);
+        }
         break;
       case "Submit Task":
-        handleOpenSubmitTask();
+        setOpenSubmitTask(true);
         break;
       default:
         break;
     }
   };
 
+  const menuItems = options[role] || [];
+
   return (
     <div className="task">
       <div className="container">
         <div className="left">
           <div className="l">
-            {/* If task image exists, display it; otherwise, use a random image */}
             <img src={taskImage || item.image} alt="task" />
           </div>
           <div className="r">
             <h2>{item.name}</h2>
             <p>{item.description}</p>
+            <p>
+              <strong>Status:</strong> {item.status}
+            </p>
+            <p>
+              <strong>Deadline:</strong>{" "}
+              {new Date(item.deadline).toLocaleString()}
+            </p>
+            <p>
+              <strong>Assigned User:</strong>{" "}
+              {item.assignedUserId || "Unassigned"}
+            </p>
+            <p>
+              <strong>User Comment:</strong> {item.userComment || "None"}
+            </p>
           </div>
         </div>
         <div className="right">
-          <IconButton
-            aria-label="more"
-            id="long-button"
-            aria-controls={open ? "long-menu" : undefined}
-            aria-expanded={open ? "true" : undefined}
-            aria-haspopup="true"
-            onClick={handleClick}
-          >
+          <IconButton onClick={handleMenuClick}>
             <MoreVertIcon />
           </IconButton>
           <Menu
-            id="long-menu"
-            MenuListProps={{
-              "aria-labelledby": "long-button",
-            }}
             anchorEl={anchorEl}
             open={open}
-            onClose={handleClose}
+            onClose={handleMenuClose}
             PaperProps={{
-              style: {
-                maxHeight: ITEM_HEIGHT * 4.5,
-                width: "20ch",
-              },
+              style: { maxHeight: 48 * 4.5, width: "20ch" },
             }}
           >
             {menuItems.map((option) => (
@@ -160,15 +137,15 @@ const Task = ({ item }) => {
         handleClose={() => setOpenUserList(false)}
         taskId={item.id}
       />
-      <SubmuissionsList
-        taskId={item.id}
+      <SubmissionsList
         open={openSubmissionsList}
         handleClose={() => setOpenSubmissionsList(false)}
+        taskId={item.id}
       />
       <SubmitTask
-        taskId={item.id}
         open={openSubmitTask}
         handleClose={() => setOpenSubmitTask(false)}
+        taskId={item.id}
       />
     </div>
   );
