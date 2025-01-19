@@ -45,6 +45,7 @@ export default function SubmitTask({ handleClose, open, taskId }) {
       );
       alert("Submitted successfully");
       navigate("/tasks");
+      window.location.reload();
     } catch (error) {
       console.error("Axios error:", error);
       alert("Failed to submit task");

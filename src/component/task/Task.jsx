@@ -9,6 +9,7 @@ import UserList from "../userList/UserList";
 import SubmissionsList from "../SubmissionsList/SubmissionList";
 import SubmitTask from "../submitTask/SubmitTask";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const options = {
   ADMIN: ["Reassign User", "Reopen Task", "Delete"],
@@ -26,7 +27,7 @@ const Task = ({ item }) => {
   const jwt = JSON.parse(localStorage.getItem("userData")).idToken;
   const userData = JSON.parse(localStorage.getItem("userData"));
   const role = userData.user["custom:role"];
-
+  const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
@@ -59,6 +60,7 @@ const Task = ({ item }) => {
             }
           );
           alert("Task Reopened successfully");
+          window.location.reload();
         } catch (error) {
           console.error(error);
         }
@@ -69,6 +71,7 @@ const Task = ({ item }) => {
             headers: { Authorization: `${jwt}` },
           });
           alert("Task deleted successfully");
+          window.location.reload();
         } catch (error) {
           console.error(error);
         }

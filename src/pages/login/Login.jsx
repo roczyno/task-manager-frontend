@@ -54,9 +54,14 @@ const Login = () => {
       localStorage.setItem("userData", JSON.stringify(data));
 
       // Navigate to another route on success
-      data && navigate("/tasks");
+      if (data) {
+        navigate("/tasks");
+
+        // Refresh the page after navigation
+        window.location.reload();
+      }
     } catch (error) {
-      console.error("Error during login:", error);
+      alert.error("Error during login:", error);
     }
   };
 

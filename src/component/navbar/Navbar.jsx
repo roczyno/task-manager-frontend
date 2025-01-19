@@ -14,6 +14,7 @@ export const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("userData");
     navigate("/login");
+    window.location.reload();
   };
 
   return (
