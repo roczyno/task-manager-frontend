@@ -8,7 +8,7 @@ jobs:
     name: Build and Deploys
     runs-on: ubuntu-latest
     env:
-      BUCKET: www.jacobstaskmanager.io
+      BUCKET: www.taskmanager.io
       DIST: dist # Changed from 'build' to 'dist' for Vite
       REGION: eu-west-1
       DIST_ID: E36BPVTOQH6MQ8
