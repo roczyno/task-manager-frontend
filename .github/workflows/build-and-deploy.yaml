@@ -13,7 +13,7 @@ jobs:
       BUCKET: www.taskmanager.io
       DIST: dist
       REGION: eu-west-1
-      DIST_ID: E36BPVTOQH6MQ8
+      DIST_ID: EKKDBH7I74NHZ
 
     steps:
       - name: Checkout
