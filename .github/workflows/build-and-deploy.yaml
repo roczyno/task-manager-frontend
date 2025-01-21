@@ -1,24 +1,26 @@
 name: Build and Deploy Vite React App to CloudFront
+
 on:
   push:
     branches: [main]
 
 jobs:
   build-and-deploy:
-    name: Build and Deploys
+    name: Build and Deploy
     runs-on: ubuntu-latest
+
     env:
       BUCKET: www.taskmanager.io
-      DIST: dist # Changed from 'build' to 'dist' for Vite
+      DIST: dist
       REGION: eu-west-1
       DIST_ID: E36BPVTOQH6MQ8
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4 # Updated to v4
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4 # Updated to v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -28,19 +30,27 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
+          cache: "npm" # Added npm caching
 
       - name: Install Dependencies
-        run: |
-          node --version
-          npm ci
+        run: npm ci
 
       - name: Build Static Website
         run: npm run build
         env:
-          CI: false # This prevents treating warnings as errors
+          CI: false
 
       - name: Sync to S3
-        run: aws s3 sync --delete ${{ env.DIST }} s3://${{ env.BUCKET }}
+        run: |
+          aws s3 sync --delete \
+            --cache-control "max-age=31536000,public" \
+            --exclude "*.html" \
+            ${{ env.DIST }} s3://${{ env.BUCKET }}
+
+          aws s3 sync --delete \
+            --cache-control "no-cache,no-store,must-revalidate" \
+            --exclude "*" --include "*.html" \
+            ${{ env.DIST }} s3://${{ env.BUCKET }}
 
       - name: Invalidate CloudFront Cache
         run: |
