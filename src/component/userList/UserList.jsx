@@ -66,7 +66,7 @@ export default function UserList({ handleClose, open, taskId }) {
     }
   }, [open, jwt, BASE_URL]);
 
-  const handleReassignUser = async (userId) => {
+  const handleReassignUser = async (userId, username) => {
     setAssigning(userId); // Set assigning state
     try {
       await axios.put(
@@ -74,6 +74,7 @@ export default function UserList({ handleClose, open, taskId }) {
         {
           taskId,
           newAssigneeUserId: userId,
+          newAssigneeUserName: username,
         },
         {
           headers: {
@@ -123,8 +124,8 @@ export default function UserList({ handleClose, open, taskId }) {
               </ListItem>
               <Button
                 sx={{ color: "green" }}
-                onClick={() => handleReassignUser(user.userId)}
-                disabled={assigning === user.userId} // Disable if this user is being assigned
+                onClick={() => handleReassignUser(user.userId, user.username)}
+                disabled={assigning === user.userId}
               >
                 {assigning === user.userId ? (
                   <CircularProgress size={24} />

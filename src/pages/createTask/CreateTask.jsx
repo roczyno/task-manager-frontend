@@ -33,8 +33,9 @@ const CreateTask = () => {
 
         if (res.data?.isSuccessful) {
           const userList = res.data.users.map((user) => ({
-            id: user.attributes["custom:userId"], // For assignedUserId
-            email: user.attributes["email"], // Display email in dropdown
+            id: user.attributes["custom:userId"],
+            email: user.attributes["email"],
+            name: user.attributes["name"],
           }));
           setUsers(userList);
         } else {
@@ -46,7 +47,7 @@ const CreateTask = () => {
     };
 
     fetchUsers();
-  }, [jwt]);
+  }, [jwt, BASE_URL]);
 
   const handleUserChange = (event, value) => {
     setAssignedUser(value);
@@ -57,10 +58,11 @@ const CreateTask = () => {
     setLoading(true);
 
     const taskData = {
-      name: title, // Map title to name
+      name: title,
       description,
-      assignedUserId: assignedUser?.id, // Assigned user ID
-      deadline, // The full datetime string selected by the user
+      assignedUserId: assignedUser?.id,
+      assignedUserName: assignedUser?.name,
+      deadline,
     };
 
     try {
@@ -94,7 +96,7 @@ const CreateTask = () => {
           <textarea
             cols="30"
             rows="10"
-            placeholder="Description"
+            placeholder="Responsibility"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             style={{ width: "100%" }}
