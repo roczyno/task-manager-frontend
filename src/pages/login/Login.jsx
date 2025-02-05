@@ -6,6 +6,7 @@ import { Icon } from "react-icons-kit";
 import { eyeBlocked } from "react-icons-kit/icomoon/eyeBlocked";
 import { eye } from "react-icons-kit/icomoon/eye";
 import { useState } from "react";
+import axios from "axios";
 
 const Login = () => {
   const [type, setType] = useState("password");
@@ -31,26 +32,15 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${BASE_URL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+      const response = await axios.post(`${BASE_URL}/login`, {
+        email,
+        password,
       });
 
-      // Check if the response is okay
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
+      // Extract data from response
+      const data = response.data;
 
-      // Parse the response as JSON
-      const data = await response.json();
-
-      // Store the user data in localStorage
+      // Store user data in localStorage
       localStorage.setItem("userData", JSON.stringify(data));
 
       // Navigate to another route on success
@@ -61,7 +51,7 @@ const Login = () => {
         window.location.reload();
       }
     } catch (error) {
-      alert.error("Error during login:", error);
+      alert(error.response.data.message);
     }
   };
 

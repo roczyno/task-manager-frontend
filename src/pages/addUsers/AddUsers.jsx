@@ -35,6 +35,7 @@ const AddUsers = () => {
       res.data && navigate("/users");
       setLoading(false);
     } catch (error) {
+      alert(error.response.data.message);
       console.error(error);
       setLoading(false);
     }

@@ -76,6 +76,7 @@ const CreateTask = () => {
       res.data && navigate("/tasks");
       setLoading(false);
     } catch (error) {
+      alert(error.response.data.message);
       console.error(error);
       setLoading(false);
     }

@@ -36,6 +36,7 @@ const AllUsers = () => {
 
         setLoading(false);
       } catch (error) {
+        alert(error.response.data.message);
         console.error("Error fetching users:", error);
         setLoading(false);
       }

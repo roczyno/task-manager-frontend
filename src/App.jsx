@@ -13,7 +13,6 @@ import AddUsers from "./pages/addUsers/AddUsers";
 import AllUsers from "./pages/allUsers/AllUsers";
 
 const App = () => {
-  const user = true;
   const Layout = () => {
     return (
       <div className="app">
