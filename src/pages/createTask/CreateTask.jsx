@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 const CreateTask = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [deadline, setDeadline] = useState(""); // Changed dueDate to match backend field name
+  const [deadline, setDeadline] = useState("");
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [assignedUser, setAssignedUser] = useState(null);
@@ -42,6 +42,7 @@ const CreateTask = () => {
           console.error("Failed to fetch users: ", res.data);
         }
       } catch (error) {
+        alert(error.response.data.message);
         console.error("Error fetching users:", error);
       }
     };

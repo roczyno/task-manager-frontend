@@ -37,17 +37,13 @@ const Login = () => {
         password,
       });
 
-      // Extract data from response
       const data = response.data;
 
-      // Store user data in localStorage
       localStorage.setItem("userData", JSON.stringify(data));
 
-      // Navigate to another route on success
       if (data) {
         navigate("/tasks");
 
-        // Refresh the page after navigation
         window.location.reload();
       }
     } catch (error) {

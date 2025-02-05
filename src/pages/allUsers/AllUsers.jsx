@@ -21,7 +21,6 @@ const AllUsers = () => {
         console.log(res.data);
 
         if (res.data?.isSuccessful) {
-          // Map the API response to extract necessary fields
           const userList = res.data.users.map((user) => ({
             userId: user.attributes["custom:userId"],
             email: user.attributes["email"],
