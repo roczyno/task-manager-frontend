@@ -13,7 +13,7 @@ const Main = () => {
           reader content of a page when looking at it's layout
         </p>
         <div className="button">
-          <Link to="/register" className="link">
+          <Link to="/login" className="link">
             <button className="left">Get Started</button>
           </Link>
           <button className="right">30 Days free trial</button>
